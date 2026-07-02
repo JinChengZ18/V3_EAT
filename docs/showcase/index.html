@@ -229,8 +229,14 @@ const copy = {
   }
 };
 const pages = {
-  map: "resource_map.html",
-  timeline: "resource_timeline.html"
+  map: {
+    zh: "resource_map.zh.html",
+    en: "resource_map.html"
+  },
+  timeline: {
+    zh: "resource_timeline.zh.html",
+    en: "resource_timeline.html"
+  }
 };
 const savedLang = localStorage.getItem("v3eat-showcase-lang");
 const state = {
@@ -244,7 +250,8 @@ const subtitle = document.getElementById("subtitle");
 
 function render() {
   const t = copy[state.lang] || copy.zh;
-  const nextSrc = pages[state.view];
+  const pageSet = pages[state.view] || pages.map;
+  const nextSrc = pageSet[state.lang] || pageSet.en;
   document.documentElement.lang = t.htmlLang;
   document.title = `${t[state.view]} - V3_EAT Showcase`;
   title.textContent = t.title;

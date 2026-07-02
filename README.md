@@ -4,7 +4,7 @@
 
 Econometrics Automation Tool，即EAT模组，是一套V3计量经济学研究的全自动管线工具。它并不涉及游戏内容的任何修改，而是从本地文件提取数据，进行表格归档、可视化、地图绘制等工作。
 
-> 交互式 HTML 地图 showcase：[GitHub Pages 在线预览](https://jinchengz18.github.io/V3_EAT/showcase/) · [入口源文件](docs/showcase/index.html) · [资源地图](docs/showcase/resource_map.html) · [时间线](docs/showcase/resource_timeline.html)
+> 交互式 HTML 地图 showcase：[GitHub Pages 在线预览](https://jinchengz18.github.io/V3_EAT/showcase/) · [入口源文件](docs/showcase/index.html) · [资源地图](docs/showcase/resource_map.zh.html) · [时间线](docs/showcase/resource_timeline.zh.html)
 > 首次发布前需在仓库 `Settings -> Pages -> Build and deployment -> Source` 选择 `GitHub Actions`；默认 `GITHUB_TOKEN` 可以部署 Pages，但不能首次创建/启用 Pages site。
 
 | 资源等值图（铁矿 · 自动配色 + 标注 + 图例）                  | 跨版本资源变化图（红=削减，绿=增加）                         |
@@ -161,16 +161,16 @@ python -m v3_eat regions map-timeline baseline_regions_v1.9.8.xlsx baseline_regi
 python -m v3_eat regions report --maps
 ```
 
-输出位置：`out/regions/maps/`（图集 PNG/SVG + 交互 HTML；`diffs/` 变化图、`national/` 国界版、`atlas/` Excel 素材、`showcase/` 高清·国界 + 交互 HTML）。GitHub 预览版同步写入 `docs/showcase/`，入口页可在资源地图和时间线之间切换，并提供中英界面切换。
+输出位置：`out/regions/maps/`（图集 PNG/SVG + 交互 HTML；`diffs/` 变化图、`national/` 国界版、`atlas/` Excel 素材、`showcase/` 高清·国界 + 交互 HTML）。GitHub 预览版从现有 `out/regions/maps/resource_map.html` 与 `out/regions/maps/resource_timeline.html` 发布到 `docs/showcase/`，入口页可在资源地图和时间线之间切换，并提供真正的中英内容版本。
 
 > **一键重生全部示例图**：上面所有命令与参数已打包成脚本，分桶输出到子目录——
 > ```bash
 > bash scripts/gen_maps.sh
 > ```
-> Windows 用 Git Bash 运行（命令都是 `python -m v3_eat …`，PowerShell 用户也可逐条复制）。可选 `PYTHON=py`、`GAME_ROOT="D:/Games/Victoria 3"` 覆盖。主要产物在 `out/`（git 忽略，仅本地查看），同时刷新 `docs/showcase/resource_map.html` 和 `docs/showcase/resource_timeline.html`，由 `docs/showcase/index.html` 作为 GitHub Pages 预览入口。
+> Windows 用 Git Bash 运行（命令都是 `python -m v3_eat …`，PowerShell 用户也可逐条复制）。可选 `PYTHON=py`、`GAME_ROOT="D:/Games/Victoria 3"` 覆盖。主要产物在 `out/`（git 忽略，仅本地查看），最后由 `scripts/publish_showcase.py` 将已有 map/timeline HTML 发布为 `docs/showcase/resource_map.html`、`docs/showcase/resource_map.zh.html`、`docs/showcase/resource_timeline.html`、`docs/showcase/resource_timeline.zh.html`。
 
 - **PNG**：`map_<metric>.png`，中下方**艺术图例**（资源色块 + 大标题，缩略图也能一眼分辨是哪种资源），每块地标数值、描州界；字体取自游戏 ParadoxVictorian / Playfair / EB Garamond。
-- **交互式 HTML**：`resource_map.html` —— 单文件，浏览器打开即用：下拉切 14 图层、切配色、按大洲缩放、搜地区名、开关数值标注、悬停看「州名 + 数值」；`resource_timeline.html` 提供多版本滑块和变化模式；GitHub Pages 的 `showcase/` 入口提供页面切换和中英切换。
+- **交互式 HTML**：`resource_map.html` / `resource_map.zh.html` —— 单文件，浏览器打开即用：下拉切 14 图层、切配色、按大洲缩放、搜地区名、开关数值标注、悬停看「州名 + 数值」；`resource_timeline.html` / `resource_timeline.zh.html` 提供多版本滑块和变化模式；GitHub Pages 的 `showcase/` 入口按语言加载对应内容页。
 - **矢量 SVG**（`--svg`，可配 `--all`）：高清栅格底图 + 矢量数值/图例，**内嵌游戏字体**（与 PNG 一致），缩放打印不糊。
 - **国界**（`--countries`）：`--country-filter civilized`（默认，丢部落/分散政权但保留中日波斯）/ `recognized`（仅列强承认国）/ `all`；`--min-country-provinces N`（默认 8）按规模再过滤。
 - **农作物分布**（`--crops`）：据各州 `arable_resources` 出 16 种作物图（小麦/水稻/棉花/烟草/葡萄/甘蔗/咖啡/茶/丝/染料/罂粟…），显示可种植范围并按可耕地深浅着色，输出到 `maps/crops/`；交互 HTML 也含这些作物图层（共 30 层）。

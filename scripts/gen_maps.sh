@@ -71,9 +71,9 @@ run "$PY" -m v3_eat regions map-timeline "${TL[@]}" --no-current \
 # 9. Excel region report with the map atlas embedded
 run "$PY" -m v3_eat regions report --maps --out report_regions_with_maps.xlsx "${GR[@]}"
 
-# 10. GitHub Pages showcase HTML (tracked docs artifacts, smaller than the local full-res app)
-run "$PY" -m v3_eat regions map --format html --html-width 2400 --out "$DOCS_SHOWCASE" "${GR[@]}"
-run "$PY" -m v3_eat regions map-timeline "${TL[@]}" --width 1800 --out "$DOCS_SHOWCASE" "${GR[@]}"
+# 10. GitHub Pages showcase HTML. Publish the already-built local HTML viewers
+# from out/regions/maps so the map and timeline keep the same style/resolution.
+run "$PY" scripts/publish_showcase.py --maps-dir "$M" --out "$DOCS_SHOWCASE" "${GR[@]}"
 
 echo
 echo "== Done =="
@@ -85,5 +85,7 @@ echo "   $M/showcase/         native-8192 showcase + resource_map.html"
 echo "   $M/options/ national_recognized/ timeline_nocurrent/   option variants"
 echo "   out/regions/reports/report_regions_with_maps.xlsx       Excel + embedded atlas"
 echo "   $DOCS_SHOWCASE/index.html              GitHub Pages bilingual preview entry"
-echo "   $DOCS_SHOWCASE/resource_map.html       GitHub Pages resource map artifact"
-echo "   $DOCS_SHOWCASE/resource_timeline.html  GitHub Pages timeline artifact"
+echo "   $DOCS_SHOWCASE/resource_map.html       English resource map artifact"
+echo "   $DOCS_SHOWCASE/resource_map.zh.html    Chinese resource map artifact"
+echo "   $DOCS_SHOWCASE/resource_timeline.html  English timeline artifact"
+echo "   $DOCS_SHOWCASE/resource_timeline.zh.html  Chinese timeline artifact"
