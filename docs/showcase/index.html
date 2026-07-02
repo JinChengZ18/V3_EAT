@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V3_EAT Showcase</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0b111d;
+    --panel: rgba(15, 23, 42, .92);
+    --ink: #e8edf7;
+    --muted: #98a4b8;
+    --line: rgba(148, 163, 184, .22);
+    --field: rgba(148, 163, 184, .12);
+    --field-2: rgba(148, 163, 184, .2);
+    --accent: #e0b45c;
+    --on-accent: #151007;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.5 "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  header {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .brand {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mark {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex: none;
+    background: var(--accent);
+  }
+  h1 {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+  .sub {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .toolbar {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .seg {
+    display: inline-grid;
+    grid-auto-flow: column;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--field);
+  }
+  button,
+  .open-link {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 32px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0 12px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button:hover,
+  .open-link:hover {
+    color: var(--ink);
+    background: var(--field-2);
+  }
+  button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  button:focus-visible,
+  .open-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  main {
+    min-height: 0;
+    position: relative;
+    background: #0a1220;
+  }
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #0a1220;
+  }
+  @media (max-width: 780px) {
+    body { overflow: auto; }
+    header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toolbar {
+      margin-left: 0;
+      justify-content: flex-start;
+    }
+    main { min-height: calc(100dvh - 122px); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="mark"></span>
+    <h1 id="title">V3_EAT Showcase</h1>
+    <span id="subtitle" class="sub">资源地图与时间线</span>
+  </div>
+  <nav class="toolbar" aria-label="showcase controls">
+    <div class="seg" role="group" aria-label="page">
+      <button type="button" data-view="map" aria-pressed="true">资源地图</button>
+      <button type="button" data-view="timeline" aria-pressed="false">时间线</button>
+    </div>
+    <div class="seg" role="group" aria-label="language">
+      <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+      <button type="button" data-lang="en" aria-pressed="false">English</button>
+    </div>
+    <a id="openLink" class="open-link" href="resource_map.html">打开当前页</a>
+  </nav>
+</header>
+<main>
+  <iframe id="viewer" title="V3_EAT showcase" src="resource_map.html"></iframe>
+</main>
+<script>
+const copy = {
+  zh: {
+    htmlLang: "zh-CN",
+    title: "V3_EAT Showcase",
+    subtitle: "资源地图与时间线",
+    map: "资源地图",
+    timeline: "时间线",
+    open: "打开当前页",
+    frameTitle: "V3_EAT 交互式展示",
+    frame: {
+      mapTitle: "地区资源地图",
+      timelineTitle: "资源时间线",
+      layer: "资源图层",
+      mode: "模式",
+      colormap: "配色",
+      continent: "大洲",
+      search: "搜索地区…",
+      labels: "数值标注",
+      reset: "全图",
+      world: "全世界",
+      version: "版本",
+      nodata: "无数据",
+      water: "水域",
+      abs: "绝对值",
+      prev: "相对上一版",
+      first: "相对首版",
+      zoomIn: "放大",
+      zoomOut: "缩小",
+      zoomReset: "重置视图"
+    }
+  },
+  en: {
+    htmlLang: "en",
+    title: "V3_EAT Showcase",
+    subtitle: "Resource Map and Timeline",
+    map: "Resource Map",
+    timeline: "Timeline",
+    open: "Open Page",
+    frameTitle: "V3_EAT interactive showcase",
+    frame: {
+      mapTitle: "Regional Resource Map",
+      timelineTitle: "Resource Timeline",
+      layer: "Resource layer",
+      mode: "Mode",
+      colormap: "Colormap",
+      continent: "Continent",
+      search: "Search state…",
+      labels: "Labels",
+      reset: "Reset",
+      world: "World",
+      version: "Version",
+      nodata: "no data",
+      water: "water",
+      abs: "Absolute",
+      prev: "Δ vs previous",
+      first: "Δ vs first",
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
+      zoomReset: "Reset"
+    }
+  }
+};
+const pages = {
+  map: "resource_map.html",
+  timeline: "resource_timeline.html"
+};
+const savedLang = localStorage.getItem("v3eat-showcase-lang");
+const state = {
+  lang: savedLang || ((navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en"),
+  view: location.hash.replace("#", "") === "timeline" ? "timeline" : "map"
+};
+const viewer = document.getElementById("viewer");
+const openLink = document.getElementById("openLink");
+const title = document.getElementById("title");
+const subtitle = document.getElementById("subtitle");
+
+function render() {
+  const t = copy[state.lang] || copy.zh;
+  const nextSrc = pages[state.view];
+  document.documentElement.lang = t.htmlLang;
+  document.title = `${t[state.view]} - V3_EAT Showcase`;
+  title.textContent = t.title;
+  subtitle.textContent = t.subtitle;
+  document.querySelector('[data-view="map"]').textContent = t.map;
+  document.querySelector('[data-view="timeline"]').textContent = t.timeline;
+  openLink.textContent = t.open;
+  viewer.title = t.frameTitle;
+  if (viewer.getAttribute("src") !== nextSrc) {
+    viewer.src = nextSrc;
+  } else {
+    applyFrameLanguage();
+  }
+  openLink.href = nextSrc;
+  history.replaceState(null, "", `#${state.view}`);
+  document.querySelectorAll("[data-view]").forEach(btn => btn.setAttribute("aria-pressed", btn.dataset.view === state.view ? "true" : "false"));
+  document.querySelectorAll("[data-lang]").forEach(btn => btn.setAttribute("aria-pressed", btn.dataset.lang === state.lang ? "true" : "false"));
+}
+
+function labelForFrameControl(doc, id) {
+  const el = doc.getElementById(id);
+  if (!el) return null;
+  const shell = el.closest(".ctl") || el.closest("span") || el.parentElement;
+  return shell ? shell.querySelector("label, span") : null;
+}
+
+function setFrameText(doc, selector, text) {
+  const el = doc.querySelector(selector);
+  if (el) el.textContent = text;
+}
+
+function setFrameAttr(doc, selector, attr, text) {
+  const el = doc.querySelector(selector);
+  if (el) el.setAttribute(attr, text);
+}
+
+function setLegendKey(doc, swatchId, text) {
+  const swatch = doc.getElementById(swatchId);
+  const key = swatch && swatch.parentElement;
+  if (!key) return;
+  for (const node of key.childNodes) {
+    if (node.nodeType === Node.TEXT_NODE) node.textContent = text;
+  }
+}
+
+function applyFrameLanguage() {
+  const t = copy[state.lang] || copy.zh;
+  const f = t.frame;
+  let doc;
+  try {
+    doc = viewer.contentDocument;
+  } catch {
+    return;
+  }
+  if (!doc) return;
+  doc.documentElement.lang = t.htmlLang;
+  doc.title = state.view === "timeline" ? f.timelineTitle : f.mapTitle;
+  setFrameText(doc, "header h1", state.view === "timeline" ? f.timelineTitle : f.mapTitle);
+  const labels = {
+    metric: f.layer,
+    mode: f.mode,
+    cmap: f.colormap,
+    continent: f.continent
+  };
+  for (const [id, text] of Object.entries(labels)) {
+    const label = labelForFrameControl(doc, id);
+    if (label) label.textContent = text;
+  }
+  setFrameAttr(doc, "#search", "placeholder", f.search);
+  setFrameText(doc, ".switch .swl", f.labels);
+  setFrameText(doc, "label[for='lbls']", f.labels);
+  setFrameText(doc, "#reset", f.reset);
+  setFrameText(doc, "#continent option[value='__world']", f.world);
+  setFrameText(doc, "#slider > label", f.version);
+  setFrameText(doc, "#mode option[value='abs']", f.abs);
+  setFrameText(doc, "#mode option[value='prev']", f.prev);
+  setFrameText(doc, "#mode option[value='first']", f.first);
+  setLegendKey(doc, "sw-nodata", f.nodata);
+  setLegendKey(doc, "sw-water", f.water);
+  setFrameAttr(doc, "#zin", "title", f.zoomIn);
+  setFrameAttr(doc, "#zin", "aria-label", f.zoomIn);
+  setFrameAttr(doc, "#zout", "title", f.zoomOut);
+  setFrameAttr(doc, "#zout", "aria-label", f.zoomOut);
+  setFrameAttr(doc, "#zfit", "title", f.zoomReset);
+  setFrameAttr(doc, "#zfit", "aria-label", f.zoomReset);
+}
+
+document.querySelectorAll("[data-view]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.view = btn.dataset.view;
+    render();
+  });
+});
+document.querySelectorAll("[data-lang]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.lang = btn.dataset.lang;
+    localStorage.setItem("v3eat-showcase-lang", state.lang);
+    render();
+  });
+});
+viewer.addEventListener("load", applyFrameLanguage);
+render();
+</script>
+</body>
+</html>
