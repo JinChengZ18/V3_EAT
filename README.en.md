@@ -5,7 +5,6 @@
 The Econometrics Automation Tool (EAT) is a fully automated pipeline for V3 econometric research. It does not modify game content in any way; on the contrary, it extracts data from local files for tabular archiving, data visualization, and map rendering.
 
 > Interactive HTML map showcase: [GitHub Pages preview](https://jinchengz18.github.io/V3_EAT/showcase/) · [entry source](docs/showcase/index.html) · [resource map](docs/showcase/resource_map.html) · [timeline](docs/showcase/resource_timeline.html)
-> Before the first deploy, set repository `Settings -> Pages -> Build and deployment -> Source` to `GitHub Actions`; the default `GITHUB_TOKEN` can deploy Pages, but cannot create/enable the Pages site.
 
 | Resource choropleth (iron · auto colour + labels + legend)   | Cross-version change map (red = cut, green = grew)           |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |

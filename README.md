@@ -5,7 +5,6 @@
 Econometrics Automation Tool，即EAT模组，是一套V3计量经济学研究的全自动管线工具。它并不涉及游戏内容的任何修改，而是从本地文件提取数据，进行表格归档、可视化、地图绘制等工作。
 
 > 交互式 HTML 地图 showcase：[GitHub Pages 在线预览](https://jinchengz18.github.io/V3_EAT/showcase/) · [入口源文件](docs/showcase/index.html) · [资源地图](docs/showcase/resource_map.zh.html) · [时间线](docs/showcase/resource_timeline.zh.html)
-> 首次发布前需在仓库 `Settings -> Pages -> Build and deployment -> Source` 选择 `GitHub Actions`；默认 `GITHUB_TOKEN` 可以部署 Pages，但不能首次创建/启用 Pages site。
 
 | 资源等值图（铁矿 · 自动配色 + 标注 + 图例）                  | 跨版本资源变化图（红=削减，绿=增加）                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
