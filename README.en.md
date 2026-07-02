@@ -4,6 +4,8 @@
 
 The Econometrics Automation Tool (EAT) is a fully automated pipeline for V3 econometric research. It does not modify game content in any way; on the contrary, it extracts data from local files for tabular archiving, data visualization, and map rendering.
 
+> Interactive HTML map showcase: [GitHub Pages preview](https://jinchengz18.github.io/V3_EAT/showcase/resource_map.html) · [source HTML](docs/showcase/resource_map.html)
+
 | Resource choropleth (iron · auto colour + labels + legend)   | Cross-version change map (red = cut, green = grew)           |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="docs/images/map_building_iron_mine.png" alt="iron" style="zoom:80%;" /> | <img src="docs/images/map_diff_building_coal_mine_v1.0.6_to_v1.13.8.png" alt="diff" style="zoom:80%;" /> |
@@ -156,17 +158,17 @@ python -m v3_eat regions map-timeline baseline_regions_v1.9.8.xlsx baseline_regi
 python -m v3_eat regions report --maps
 ```
 
-Output: `out/regions/maps/` (gallery PNG/SVG + interactive HTML; `diffs/` change maps, `national/` border versions, `atlas/` Excel sources, `showcase/` high-res · borders).
+Output: `out/regions/maps/` (gallery PNG/SVG + interactive HTML; `diffs/` change maps, `national/` border versions, `atlas/` Excel sources, `showcase/` high-res · borders + interactive HTML). The GitHub preview copy is written to `docs/showcase/resource_map.html`.
 
 > **Regenerate every example at once**: all the commands/options above are bundled into a script that buckets its output into subfolders —
 >
 > ```bash
 > bash scripts/gen_maps.sh
 > ```
-> On Windows run it from Git Bash (the commands are plain `python -m v3_eat …`, so PowerShell users can copy them one by one too). Optional `PYTHON=py` / `GAME_ROOT="D:/Games/Victoria 3"` overrides. Outputs land in `out/` (git-ignored, local only).
+> On Windows run it from Git Bash (the commands are plain `python -m v3_eat …`, so PowerShell users can copy them one by one too). Optional `PYTHON=py` / `GAME_ROOT="D:/Games/Victoria 3"` overrides. Most outputs land in `out/` (git-ignored, local only), while `docs/showcase/resource_map.html` is refreshed as the GitHub Pages preview copy.
 
 - **PNG**: `map_<metric>.png`, with a bottom-centre **artistic legend** (resource colour-chip + large title — identifiable even as a thumbnail), a value at each state's centre, and outlined borders; fonts from the game's ParadoxVictorian / Playfair / EB Garamond.
-- **Interactive HTML**: `resource_map.html` — single file, open in a browser: dropdowns for the 14 layers and colormap, continent zoom, state search, label toggle, hover for "state + value".
+- **Interactive HTML**: `resource_map.html` — single file, open in a browser: dropdowns for the 14 layers and colormap, continent zoom, state search, label toggle, hover for "state + value"; the showcase copy is also published through GitHub Pages.
 - **Vector SVG** (`--svg`, combine with `--all`): high-res raster fill + vector labels/legend with the **game fonts embedded**, crisp at any zoom/print.
 - **National borders** (`--countries`): `--country-filter civilized` (default, drops tribal/decentralized polities but keeps China/Japan/Persia) / `recognized` (great-power-recognized only) / `all`; `--min-country-provinces N` (default 8) trims by size.
 - **Crop distribution** (`--crops`): from each state's `arable_resources`, 16 crop maps (wheat/rice/cotton/tobacco/vineyard/sugar/coffee/tea/silk/dye/opium…) showing the crop's growable range shaded by arable land, into `maps/crops/`; the interactive HTML also includes these crop layers (30 total).

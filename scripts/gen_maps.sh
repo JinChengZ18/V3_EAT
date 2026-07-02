@@ -11,13 +11,15 @@
 # Windows: run it from Git Bash (ships with Git for Windows). The commands are
 # just `python -m v3_eat …`, so a PowerShell user can equally copy them by hand.
 #
-# Outputs go under out/regions/ (git-ignored) — nothing here is committed.
+# Outputs go under out/regions/ (git-ignored), plus docs/showcase/resource_map.html
+# for the GitHub Pages preview.
 
 set -uo pipefail
 cd "$(dirname "$0")/.."                       # project root (scripts/..)
 
 PY="${PYTHON:-python}"
 M="out/regions/maps"
+DOCS_SHOWCASE="docs/showcase"
 OLD="baseline_regions_v1.0.6.xlsx"            # bundled baselines (baselines/ is auto-searched)
 NEW="baseline_regions_v1.13.8.xlsx"           # oldest -> newest span for the diff demos
 TL=(baseline_regions_v1.0.6.xlsx baseline_regions_v1.3.6.xlsx \
@@ -42,9 +44,9 @@ run "$PY" -m v3_eat regions map --all --countries --svg --format png --out "$M/n
 run "$PY" -m v3_eat regions map --metric total_capacity --countries --country-filter recognized \
     --svg --format png --out "$M/national_recognized" "${GR[@]}"
 
-# 5. High-res showcase (native 8192 + borders + SVG) -> maps/showcase/
+# 5. High-res showcase (native 8192 + borders + SVG + interactive HTML) -> maps/showcase/
 run "$PY" -m v3_eat regions map --metric total_capacity --full-res --countries --svg \
-    --format png --out "$M/showcase" "${GR[@]}"
+    --format both --out "$M/showcase" "${GR[@]}"
 
 # 6. Option demos (grid+cmap, log+no-borders, gamma+reverse) -> maps/options/
 run "$PY" -m v3_eat regions map --metric building_coal_mine --grid --cmap magma \
@@ -69,12 +71,16 @@ run "$PY" -m v3_eat regions map-timeline "${TL[@]}" --no-current \
 # 9. Excel region report with the map atlas embedded
 run "$PY" -m v3_eat regions report --maps --out report_regions_with_maps.xlsx "${GR[@]}"
 
+# 10. GitHub Pages showcase HTML (tracked docs artifact, smaller than the local full-res app)
+run "$PY" -m v3_eat regions map --format html --html-width 2400 --out "$DOCS_SHOWCASE" "${GR[@]}"
+
 echo
 echo "== Done =="
 echo "   $M/                  gallery PNG/SVG + resource_map.html + resource_timeline.html"
 echo "   $M/crops/            16 crop-distribution maps"
 echo "   $M/national/         national borders on every layer"
 echo "   $M/diffs/            cross-version change maps"
-echo "   $M/showcase/         native-8192 showcase"
+echo "   $M/showcase/         native-8192 showcase + resource_map.html"
 echo "   $M/options/ national_recognized/ timeline_nocurrent/   option variants"
 echo "   out/regions/reports/report_regions_with_maps.xlsx       Excel + embedded atlas"
+echo "   $DOCS_SHOWCASE/resource_map.html       GitHub Pages preview artifact"
