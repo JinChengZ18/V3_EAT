@@ -4,8 +4,7 @@
 
 The Econometrics Automation Tool (EAT) is a fully automated pipeline for V3 econometric research. It does not modify game content in any way; on the contrary, it extracts data from local files for tabular archiving, data visualization, and map rendering.
 
-> Interactive HTML map showcase: [GitHub Pages preview](https://jinchengz18.github.io/V3_EAT/showcase/resource_map.html) · [source HTML](docs/showcase/resource_map.html)
-> Before the first deploy, set repository `Settings -> Pages -> Build and deployment -> Source` to `GitHub Actions`; the default `GITHUB_TOKEN` can deploy Pages, but cannot create/enable the Pages site.
+> Interactive HTML map showcase: [GitHub Pages preview](https://jinchengz18.github.io/V3_EAT/showcase/) · [entry source](docs/showcase/index.html) · [resource map](docs/showcase/resource_map.html) · [timeline](docs/showcase/resource_timeline.html)
 
 | Resource choropleth (iron · auto colour + labels + legend)   | Cross-version change map (red = cut, green = grew)           |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -159,17 +158,17 @@ python -m v3_eat regions map-timeline baseline_regions_v1.9.8.xlsx baseline_regi
 python -m v3_eat regions report --maps
 ```
 
-Output: `out/regions/maps/` (gallery PNG/SVG + interactive HTML; `diffs/` change maps, `national/` border versions, `atlas/` Excel sources, `showcase/` high-res · borders + interactive HTML). The GitHub preview copy is written to `docs/showcase/resource_map.html`.
+Output: `out/regions/maps/` (gallery PNG/SVG + interactive HTML; `diffs/` change maps, `national/` border versions, `atlas/` Excel sources, `showcase/` high-res · borders + interactive HTML). The GitHub preview is published from the existing `out/regions/maps/resource_map.html` and `out/regions/maps/resource_timeline.html` into `docs/showcase/`, with an entry page that switches between the resource map and timeline and exposes real Chinese/English content versions.
 
 > **Regenerate every example at once**: all the commands/options above are bundled into a script that buckets its output into subfolders —
 >
 > ```bash
 > bash scripts/gen_maps.sh
 > ```
-> On Windows run it from Git Bash (the commands are plain `python -m v3_eat …`, so PowerShell users can copy them one by one too). Optional `PYTHON=py` / `GAME_ROOT="D:/Games/Victoria 3"` overrides. Most outputs land in `out/` (git-ignored, local only), while `docs/showcase/resource_map.html` is refreshed as the GitHub Pages preview copy.
+> On Windows run it from Git Bash (the commands are plain `python -m v3_eat …`, so PowerShell users can copy them one by one too). Optional `PYTHON=py` / `GAME_ROOT="D:/Games/Victoria 3"` overrides. Most outputs land in `out/` (git-ignored, local only), and `scripts/publish_showcase.py` publishes the existing map/timeline HTML to `docs/showcase/resource_map.html`, `docs/showcase/resource_map.zh.html`, `docs/showcase/resource_timeline.html`, and `docs/showcase/resource_timeline.zh.html`.
 
 - **PNG**: `map_<metric>.png`, with a bottom-centre **artistic legend** (resource colour-chip + large title — identifiable even as a thumbnail), a value at each state's centre, and outlined borders; fonts from the game's ParadoxVictorian / Playfair / EB Garamond.
-- **Interactive HTML**: `resource_map.html` — single file, open in a browser: dropdowns for the 14 layers and colormap, continent zoom, state search, label toggle, hover for "state + value"; the showcase copy is also published through GitHub Pages.
+- **Interactive HTML**: `resource_map.html` / `resource_map.zh.html` — single files, open in a browser: dropdowns for the 14 layers and colormap, continent zoom, state search, label toggle, hover for "state + value"; `resource_timeline.html` / `resource_timeline.zh.html` add a multi-version slider and change modes; the GitHub Pages `showcase/` entry loads the matching language content page.
 - **Vector SVG** (`--svg`, combine with `--all`): high-res raster fill + vector labels/legend with the **game fonts embedded**, crisp at any zoom/print.
 - **National borders** (`--countries`): `--country-filter civilized` (default, drops tribal/decentralized polities but keeps China/Japan/Persia) / `recognized` (great-power-recognized only) / `all`; `--min-country-provinces N` (default 8) trims by size.
 - **Crop distribution** (`--crops`): from each state's `arable_resources`, 16 crop maps (wheat/rice/cotton/tobacco/vineyard/sugar/coffee/tea/silk/dye/opium…) showing the crop's growable range shaded by arable land, into `maps/crops/`; the interactive HTML also includes these crop layers (30 total).

@@ -11,8 +11,8 @@
 # Windows: run it from Git Bash (ships with Git for Windows). The commands are
 # just `python -m v3_eat …`, so a PowerShell user can equally copy them by hand.
 #
-# Outputs go under out/regions/ (git-ignored), plus docs/showcase/resource_map.html
-# for the GitHub Pages preview.
+# Outputs go under out/regions/ (git-ignored), plus docs/showcase/ for the
+# GitHub Pages preview.
 
 set -uo pipefail
 cd "$(dirname "$0")/.."                       # project root (scripts/..)
@@ -71,8 +71,9 @@ run "$PY" -m v3_eat regions map-timeline "${TL[@]}" --no-current \
 # 9. Excel region report with the map atlas embedded
 run "$PY" -m v3_eat regions report --maps --out report_regions_with_maps.xlsx "${GR[@]}"
 
-# 10. GitHub Pages showcase HTML (tracked docs artifact, smaller than the local full-res app)
-run "$PY" -m v3_eat regions map --format html --html-width 2400 --out "$DOCS_SHOWCASE" "${GR[@]}"
+# 10. GitHub Pages showcase HTML. Publish the already-built local HTML viewers
+# from out/regions/maps so the map and timeline keep the same style/resolution.
+run "$PY" scripts/publish_showcase.py --maps-dir "$M" --out "$DOCS_SHOWCASE" "${GR[@]}"
 
 echo
 echo "== Done =="
@@ -83,4 +84,8 @@ echo "   $M/diffs/            cross-version change maps"
 echo "   $M/showcase/         native-8192 showcase + resource_map.html"
 echo "   $M/options/ national_recognized/ timeline_nocurrent/   option variants"
 echo "   out/regions/reports/report_regions_with_maps.xlsx       Excel + embedded atlas"
-echo "   $DOCS_SHOWCASE/resource_map.html       GitHub Pages preview artifact"
+echo "   $DOCS_SHOWCASE/index.html              GitHub Pages bilingual preview entry"
+echo "   $DOCS_SHOWCASE/resource_map.html       English resource map artifact"
+echo "   $DOCS_SHOWCASE/resource_map.zh.html    Chinese resource map artifact"
+echo "   $DOCS_SHOWCASE/resource_timeline.html  English timeline artifact"
+echo "   $DOCS_SHOWCASE/resource_timeline.zh.html  Chinese timeline artifact"
