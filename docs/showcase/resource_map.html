@@ -297,8 +297,7 @@ function drawLabels(){
   const i0=Math.floor((0-sx0)/tileW)-1, i1=Math.ceil((vw-sx0)/tileW)+1;
   vctx.textAlign='center'; vctx.textBaseline='middle'; vctx.lineJoin='round';
   for(const L of labels){
-    const zr=Math.max(1,z/minZ());
-    let sz=Math.max(10*dpr,Math.min(26*dpr,L.sz*Math.sqrt(zr)*dpr));
+    let sz=L.sz*z; if(sz<8*dpr) continue; sz=Math.min(sz,26*dpr);
     const y=sy0+L.y*z; if(y<-30||y>vh+30) continue;
     vctx.font='600 '+sz.toFixed(1)+'px "Segoe UI",system-ui,sans-serif';
     vctx.lineWidth=Math.max(2,sz/5);

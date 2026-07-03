@@ -186,18 +186,11 @@ def _translate_payload(payload: dict, state_ids: list[str], game_zh, ui_zh) -> d
     return payload
 
 
-def _patch_interactions(html: str, label_max_px: int) -> str:
-    label_re = re.compile(
-        rf"(?m)^(\s*)let sz=L\.sz\*z; if\(sz<8\*dpr\) continue; sz=Math\.min\(sz,{label_max_px}\*dpr\);"
-    )
-    html, label_count = label_re.subn(
-        rf"\1const zr=Math.max(1,z/minZ());\n\1let sz=Math.max(10*dpr,Math.min({label_max_px}*dpr,L.sz*Math.sqrt(zr)*dpr));",
-        html,
-        count=1,
-    )
-    if label_count != 1:
-        raise ValueError("label zoom expression not found")
-
+def _patch_interactions(html: str) -> str:
+    # Label sizing stays as generated (proportional zoom scaling with a small-size
+    # cull and a screen-px cap): flooring every label at 10px with no cull drew all
+    # ~670 labels at world view and crowded the map. Only the search handler is
+    # patched, to match aliases (state id / other-language name / continent).
     if MAP_SEARCH in html:
         return html.replace(MAP_SEARCH, PATCHED_SEARCH, 1)
     if TIMELINE_SEARCH in html:
@@ -236,18 +229,18 @@ def _translate_html(html: str, payload: dict) -> str:
     return _translate_chrome(html)
 
 
-def publish_one(src: Path, dst_en: Path, dst_zh: Path, game_en, game_zh, game_root: Path, label_max_px: int) -> None:
+def publish_one(src: Path, dst_en: Path, dst_zh: Path, game_en, game_zh, game_root: Path) -> None:
     html = src.read_text(encoding="utf-8")
     state_ids = _state_ids(game_en, game_root, get_ui("english"), html)
 
     payload = _payload(html)
     en_payload = _add_search_aliases(copy.deepcopy(payload), state_ids, game_zh, get_ui("simp_chinese"))
-    en_html = _patch_interactions(_replace_payload(html, en_payload), label_max_px).replace("\r\n", "\n")
+    en_html = _patch_interactions(_replace_payload(html, en_payload)).replace("\r\n", "\n")
     dst_en.write_text(en_html, encoding="utf-8", newline="\n")
 
     zh_payload = _translate_payload(copy.deepcopy(payload), state_ids, game_zh, get_ui("simp_chinese"))
     zh_payload = _add_search_aliases(zh_payload, state_ids, game_en, get_ui("english"))
-    zh_html = _patch_interactions(_translate_html(html, zh_payload), label_max_px).replace("\r\n", "\n")
+    zh_html = _patch_interactions(_translate_html(html, zh_payload)).replace("\r\n", "\n")
     dst_zh.write_text(zh_html, encoding="utf-8", newline="\n")
 
 
@@ -272,7 +265,7 @@ def main() -> int:
     game_en = load(game_root, "english")
     game_zh = load(game_root, "simp_chinese")
 
-    publish_one(map_src, out_dir / "resource_map.html", out_dir / "resource_map.zh.html", game_en, game_zh, game_root, 26)
+    publish_one(map_src, out_dir / "resource_map.html", out_dir / "resource_map.zh.html", game_en, game_zh, game_root)
     publish_one(
         timeline_src,
         out_dir / "resource_timeline.html",
@@ -280,7 +273,6 @@ def main() -> int:
         game_en,
         game_zh,
         game_root,
-        24,
     )
     # Keep the entry page source controlled by docs/showcase/index.html; this
     # script only publishes the content pages from existing map artifacts.

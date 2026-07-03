@@ -322,13 +322,20 @@ function applyFrameLanguage() {
   }
   setFrameAttr(doc, "#search", "placeholder", f.search);
   setFrameText(doc, ".switch .swl", f.labels);
-  setFrameText(doc, "label[for='lbls']", f.labels);
+  // Only rewrite the legacy standalone text label. In the current template
+  // label[for='lbls'] is the whole switch WRAPPING input#lbls — setting its
+  // textContent would destroy the checkbox and break every later drawView().
+  const lblsLabel = doc.querySelector("label[for='lbls']");
+  if (lblsLabel && lblsLabel.childElementCount === 0) lblsLabel.textContent = f.labels;
   setFrameText(doc, "#reset", f.reset);
   setFrameText(doc, "#continent option[value='__world']", f.world);
   setFrameText(doc, "#slider > label", f.version);
   setFrameText(doc, "#mode option[value='abs']", f.abs);
   setFrameText(doc, "#mode option[value='prev']", f.prev);
   setFrameText(doc, "#mode option[value='first']", f.first);
+  setFrameText(doc, "#mode button[data-v='abs']", f.abs);
+  setFrameText(doc, "#mode button[data-v='prev']", f.prev);
+  setFrameText(doc, "#mode button[data-v='first']", f.first);
   setLegendKey(doc, "sw-nodata", f.nodata);
   setLegendKey(doc, "sw-water", f.water);
   setFrameAttr(doc, "#zin", "title", f.zoomIn);
